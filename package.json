@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@octokit/rest": "^15.1.9",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.9",
+    "request": "^2.83.0"
+  },
+  "scripts": {
+    "start": "node -r dotenv/config server.js dotenv_config_path=./config"
+  }
+}
