@@ -9,7 +9,7 @@ DB_PORT=27001
 DB_NAME=mydb
 
 # NPM
-KEYWORDS=node,bio
+KEYWORDS=biojs,bionode
 
 # GITHUB
 GITHUB_TOKEN=xxxxxx
