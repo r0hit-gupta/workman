@@ -8,7 +8,7 @@ if (GITHUB_TOKEN) {
   });
 }
 
-async function getRepoInfo(link) {
+exports.getRepoInfo = async function(link) {
   if (!link) return {};
   let x = link.split("/"); // split github repository link
   let owner = x[3]; // get user or organisation name from given link
@@ -17,6 +17,5 @@ async function getRepoInfo(link) {
   // fetch repository info from github
   let { data } = await github.repos.get({ owner, repo });
   return data;
-}
+};
 
-exports.getRepoInfo = getRepoInfo;

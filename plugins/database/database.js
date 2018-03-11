@@ -21,7 +21,8 @@ const packageSchema = mongoose.Schema({
 // Create a mongo model using the above package schema
 const Package = mongoose.model("Package", packageSchema);
 
-function connect() {
+// function to connect to the database
+exports.connect = function() {
   // Attempt connection to the database
   mongoose.connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${
@@ -45,24 +46,24 @@ function connect() {
   mongoose.connection.on("disconnected", () => {
     console.log("Database disconnected");
   });
-}
+};
 
-// add package to the database
-async function add(pkg) {
+// function to add a package to the database
+exports.add = async function(pkg) {
   let package = new Package(pkg);
   await package
     .save()
     .then(package => console.log("Added Package - " + package.name))
     .catch(err => console.error(err));
-}
+};
 
-// clear the database
-async function clear() {
+// function to clear the database
+exports.clear = async function() {
   await Package.remove({}, () => console.log("Database cleared"));
-}
+};
 
-// get all packages from the database
-async function getAllPackages() {
+// function to get all packages from the database
+exports.getAllPackages = function() {
   return new Promise((resolve, reject) => {
     Package.find({}, (err, packages) => {
       if (err) {
@@ -74,9 +75,9 @@ async function getAllPackages() {
       resolve(packages);
     });
   });
-}
+};
 
-function getPackageByName(name) {
+exports.getPackageByName = function(name) {
   return new Promise((resolve, reject) => {
     Package.findOne({ name }, (err, package) => {
       if (err) {
@@ -88,10 +89,4 @@ function getPackageByName(name) {
       resolve(package);
     });
   });
-}
-
-exports.connect = connect;
-exports.add = add;
-exports.clear = clear;
-exports.getAllPackages = getAllPackages;
-exports.getPackageByName = getPackageByName;
+};

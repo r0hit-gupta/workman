@@ -2,7 +2,8 @@ const database = require("../database/database");
 const npm = require("../npm/npm");
 const github = require("../github/github");
 
-async function updatePackages() {
+
+exports.updatePackages = async function() {
   // clear the database before adding new packages
   await database.clear();
 
@@ -13,7 +14,7 @@ async function updatePackages() {
     // loop through every package and get more details about it from npm and github
     packages.map(async package => {
       package = package.package;
-      
+
       // get number of downloads of the package from npm
       package.downloads = await npm.getDownloads(package.name);
 
@@ -29,6 +30,5 @@ async function updatePackages() {
   } catch (err) {
     console.error(err);
   }
-}
+};
 
-exports.updatePackages = updatePackages;
