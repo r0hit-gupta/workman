@@ -1,7 +1,7 @@
 const request = require('request');
 
 const DOWNLOADS_ENDPOINT = 'https://api.npmjs.org/downloads/point/'
-const REGISTRY_ENDPOINT = 'https://registry.npmjs.org/-/v1/search?text=keywords:biojs,nodebio&size=2'
+const REGISTRY_ENDPOINT = 'https://registry.npmjs.org/-/v1/search?size=20&text=keywords:'
 
 function getDownloads(packageName) {
     return new Promise((resolve, reject) => {
@@ -42,7 +42,7 @@ function getDownloads(packageName) {
 function getPackages(keywords) {
     return new Promise((resolve, reject) => {
 
-        request.get(REGISTRY_ENDPOINT, (err, res, body) => {
+        request.get(REGISTRY_ENDPOINT + keywords, (err, res, body) => {
             if (err) {
                 console.log("Error getting details for " + packageName);
                 reject(err);
@@ -54,9 +54,8 @@ function getPackages(keywords) {
                 console.log("Error parsing details for package " + packageName);
                 reject(err);
             }
-            
+            // ignore scoped npm packages 
             let data = body.objects.filter(obj => obj.package.scope === "unscoped")
-
             resolve(data);
         });
     })

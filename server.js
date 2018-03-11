@@ -2,34 +2,32 @@ const express = require("express");
 const app = express();
 
 const database = require("./plugins/database/database");
-const npm = require("./plugins/npm/npm");
-const github = require("./plugins/github/github");
+const cronjob = require('./plugins/cronjob/cronjob');
 
 // connect to the database with predefined crendentials stored in config
-database.connect();
-
-async function cron() {
-  await database.clear();
-  try {
-    let packages = await npm.getPackages();
-    for (let package of packages) {
-      package = package.package;
-    //   console.log(package.name);
-      package.downloads = await npm.getDownloads(package.name);
-      let data = await github.getRepoInfo(package.links.repository);
-      package = Object.assign(package, data);
-      await database.add(package);
-    }
-  } catch (err) {
-    console.log(err);
-  }
+async function init() {
+  await database.connect();
+  // await cronjob.updatePackages();
 }
 
-cron();
+init();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/", async (req, res) => {
+  let packages = await database.getAllPackages();
+  res.json(packages);
 });
+
+app.get("/package/:name", async (req, res) => {
+  let name = req.params.name || null;
+  console.log(name);
+  if(name){
+    let package = await database.getPackageByName();
+    res.json(package);
+  }
+  else {
+    res.json({"error": "Package not found"});
+  }
+})
 
 // start server on provided port
 app.listen(process.env.PORT, () => {
