@@ -48,10 +48,11 @@ function connect() {
 }
 
 // add package to the database
-async function add(package) {
-  let pkg = new Package(package);
-  await pkg.save()
-    .then(pkg => console.log("Added Package - " + pkg.name))
+async function add(pkg) {
+  let package = new Package(pkg);
+  await package
+    .save()
+    .then(package => console.log("Added Package - " + package.name))
     .catch(err => console.error(err));
 }
 
@@ -62,30 +63,32 @@ async function clear() {
 
 // get all packages from the database
 async function getAllPackages() {
-  let packages = await Package.find({}, (err, packages) => {
-    if (err) {
-      console.error("Error fetching all packages");
-      throw new Error(err);
-    }
-    resolve(packages);
+  return new Promise((resolve, reject) => {
+    Package.find({}, (err, packages) => {
+      if (err) {
+        reject(err);
+      }
+      if (!packages) {
+        reject("No packages found");
+      }
+      resolve(packages);
+    });
   });
-  return packages;
 }
 
-async function getPackageByName(name) {
-    let package = await Package.find({name}, (err, package) => {
+function getPackageByName(name) {
+  return new Promise((resolve, reject) => {
+    Package.findOne({ name }, (err, package) => {
       if (err) {
-        console.error("Error fetching package - " + name);
-        throw new Error(err);
-        reject(err)
+        reject(err);
       }
-    //   return package;
-    //   resolve(package);
+      if (!package) {
+        reject("Package does not exist");
+      }
+      resolve(package);
     });
-    return package;
-  }
-
-
+  });
+}
 
 exports.connect = connect;
 exports.add = add;
