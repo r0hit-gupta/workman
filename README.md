@@ -1,4 +1,4 @@
-### workman
+# workman
 A basic reimplementation of https://github.com/biojs/registry-workmen
 
 ### Installation
