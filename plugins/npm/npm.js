@@ -1,7 +1,7 @@
 const request = require('request');
 
 const DOWNLOADS_ENDPOINT = 'https://api.npmjs.org/downloads/point/'
-const REGISTRY_ENDPOINT = 'https://registry.npmjs.org/-/v1/search?text=keywords:biojs,nodebio&size=10'
+const REGISTRY_ENDPOINT = 'https://registry.npmjs.org/-/v1/search?text=keywords:biojs,nodebio&size=2'
 
 function getDownloads(packageName) {
     return new Promise((resolve, reject) => {

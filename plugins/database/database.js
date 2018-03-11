@@ -8,14 +8,15 @@ const packageSchema = mongoose.Schema({
     description: String,
     keywords: [String],
     links: Object,
-    stars: String,
+    stargazers_count: String,
     downloads: String,
-    watchers: String,
+    subscribers_count: Number,
     commits: String,
-    modified: { type: Date },
-    created: { type: Date },
-    openIssues: String
-}, { strict: true });
+    updated_at: { type: Date },
+    created_at: { type: Date },
+    open_issues: Number,
+    forks: Number
+});
 
 const Package = mongoose.model('Package', packageSchema);
 
@@ -51,8 +52,8 @@ function add(package) {
         .catch(err => console.log(err))
 }
 
-function clear() {
-    Package.remove({}, () => console.log("Database cleared"));
+async function clear() {
+    await Package.remove({}, () => console.log("Database cleared"));
 }
 
 function get() {
