@@ -1,4 +1,9 @@
 {
+  "name": "workman",
+  "description": "A basic mimic of BioJS workmen.",
+  "version": "0.0.1",
+  "devDependencies": {},
+  "license": "ISC",
   "dependencies": {
     "@octokit/rest": "^15.1.9",
     "dotenv": "^5.0.1",
